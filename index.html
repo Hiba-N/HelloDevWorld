@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>
+        To-Do List
+    </title>
+    <link rel="icon" href=https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Circle-icons-clipboard.svg/1200px-Circle-icons-clipboard.svg.png>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- Heading -->
+<h1 class="heading"> The To Do App</h1>
+
+
+<!-- Input area with button -->
+
+<form id="input_task" onsubmit="return false;">
+    <label for="input">Add Task:</label><br>
+    <input type="text" id="task" placeholder="Add task here">
+    <button id="button" onclick="printInput('')">✅</button>
+</form>
+
+<br>
+<hr class="divider">
+<p>To Do ⌛</p>
+
+
+<!-- list of tasks already added in descending order (lastest added task at top) with button to mark them completed or to delete them from app-->
+
+<div id="output"></div>
+
+<hr class="divider">
+
+<!--  at the bottom, crossed out tasks that have been marked completed-->
+<p>Completed Tasks 🎉</p>
+
+<div id="completed"></div>
+
+
+</body>
+
+</html>
