@@ -21,6 +21,10 @@ function saveTasks() {
     //console.log(text)
     localStorage.setItem('tasks', JSON.stringify(textContentArray));
 
+};
+
+function saveCompletetasks() {
+
     const completed = Array.from(document.getElementById('completed').children)
     .filter(node => node.tagName === 'DIV');
 
@@ -32,7 +36,7 @@ function saveTasks() {
 
     //console.log(text)
     localStorage.setItem('complete', JSON.stringify(textContentIncomp));
-}
+};
 
 // Function to load task data from local storage
 function loadTasks() {
@@ -40,7 +44,8 @@ function loadTasks() {
     tasks.forEach(task => printInput(task));
 
     const complete = JSON.parse(localStorage.getItem('complete')) || [];
-    tasks.forEach(complete => complete_task(complete));
+    complete.forEach(complete => complete_task_recover(complete));
+
 }
 
 function printInput(text) {
@@ -111,13 +116,25 @@ function complete_task() {
     const oldDiv = this.parentNode;
     const text = Array.from(oldDiv.childNodes).filter(node => node.nodeType === Node.TEXT_NODE)
     console.log(text[0]);
-    const output = document.getElementById('completed');
     const newDiv = document.createElement('div');
-    const undoButton = document.createElement('button'); 
+
 
     //newDiv.innerHTML = '<s>' + text[0].data + '</s>';
     newDiv.innerHTML = text[0].data;
+    add_to_completed(newDiv);
+    delete_task.call(this);
+};
 
+function complete_task_recover(complete_text) {
+    const newDiv = document.createElement('div');
+    newDiv.innerHTML = complete_text;
+    add_to_completed(newDiv);
+};
+
+function add_to_completed(newDiv) {
+
+    const output = document.getElementById('completed');
+    const undoButton = document.createElement('button'); 
     undoButton.innerHTML = '🔄'; 
         // isko bhi
     undoButton.style.marginLeft = 'auto'; // Push the button to the right
@@ -136,9 +153,8 @@ function complete_task() {
     newDiv.style.display = 'flex';
 
     output.insertBefore(newDiv, output.firstChild);
-    delete_task.call(this);
-    
-    saveTasks();
+
+    saveCompletetasks();
 };
 
 
@@ -152,5 +168,6 @@ function undoTask() {
     delete_task.call(this);
 
     saveTasks();
+    saveCompletetasks();
 }
 
