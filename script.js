@@ -51,8 +51,11 @@ function printInput(text) {
 }
 
 function delete_task() {
+    parent_div = this.parentNode.parentNode;
+    console.log(parent_div.id)
+    //x = 'output'
     // Add functionality to delete the corresponding div
-    const output = document.getElementById('output')
+    const output = document.getElementById(parent_div.id)
     output.removeChild(this.parentNode);
 };
 
@@ -97,5 +100,7 @@ function undoTask() {
     const text = Array.from(oldDiv.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
     console.log(text[0].data)
     printInput(text[0].data)
+    delete_task.call(this);
+
 }
 
