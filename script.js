@@ -1,4 +1,47 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Call loadTasks() once the page content is loaded
+    loadTasks();
+});
 
+
+// Function to save task data to local storage
+function saveTasks() {
+  
+    const tasks = Array.from(document.getElementById('output').children)
+        .filter(node => node.tagName === 'DIV');
+
+    // First, filter out text nodes from each div in the tasks array
+    const textNodesInDivs = tasks.map(div => Array.from(div.childNodes).filter(node => node.nodeType === Node.TEXT_NODE));
+
+    // Next, extract text content from each text node and flatten the resulting array
+    const textContentArray = textNodesInDivs.flatMap(textNodes => textNodes.map(node => node.textContent.trim()));
+
+    console.log(textContentArray);
+    
+    //console.log(text)
+    localStorage.setItem('tasks', JSON.stringify(textContentArray));
+
+    const completed = Array.from(document.getElementById('completed').children)
+    .filter(node => node.tagName === 'DIV');
+
+    // First, filter out text nodes from each div in the tasks array
+    const textNodesIncomp = completed.map(div => Array.from(div.childNodes).filter(node => node.nodeType === Node.TEXT_NODE));
+
+    // Next, extract text content from each text node and flatten the resulting array
+    const textContentIncomp = textNodesIncomp.flatMap(textNodes => textNodes.map(node => node.textContent.trim()));
+
+    //console.log(text)
+    localStorage.setItem('complete', JSON.stringify(textContentIncomp));
+}
+
+// Function to load task data from local storage
+function loadTasks() {
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks.forEach(task => printInput(task));
+
+    const complete = JSON.parse(localStorage.getItem('complete')) || [];
+    tasks.forEach(complete => complete_task(complete));
+}
 
 function printInput(text) {
 
@@ -48,6 +91,9 @@ function printInput(text) {
     // Clear the input field after printing
     input.value = "";
 
+    // Save tasks to local storage after printing
+    saveTasks();
+
 }
 
 function delete_task() {
@@ -57,6 +103,8 @@ function delete_task() {
     // Add functionality to delete the corresponding div
     const output = document.getElementById(parent_div.id)
     output.removeChild(this.parentNode);
+
+    saveTasks();
 };
 
 function complete_task() {
@@ -89,7 +137,8 @@ function complete_task() {
 
     output.insertBefore(newDiv, output.firstChild);
     delete_task.call(this);
-
+    
+    saveTasks();
 };
 
 
@@ -102,5 +151,6 @@ function undoTask() {
     printInput(text[0].data)
     delete_task.call(this);
 
+    saveTasks();
 }
 
